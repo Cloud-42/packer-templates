@@ -1,7 +1,7 @@
 # packer-templates
 A collection of useful Packer ( https://www.packer.io/ ) templates.
 
-#### packer_encrypted_base_image.json 
+#### [packer_encrypted_base_image.json](https://github.com/Cloud-42/packer-templates/blob/master/packer_encrypted_base_image.json "packer_encrypted_base_image.json")  
 Creates an encrypted base AMI. Details:
  * Uses the latest Amazon Linux 2 AMI as its base.
  * Temp IAM profile grants access to SSM parameters.
