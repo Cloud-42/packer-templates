@@ -1,5 +1,5 @@
 # packer-templates
-A collection of useful Packer <a href="https://www.packer.io/" target="_blank">Packer</a> templates.
+A collection of useful<a href="https://www.packer.io/" target="_blank"> Packer </a>templates.
 
 #### Usage & assumptions
  * Local directory "scripts" is created that contains any provisioning scripts 
