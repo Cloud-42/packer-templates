@@ -1,0 +1,66 @@
+{
+        "variables": {
+                "region": "",
+                "media_snapshot_id": "",
+                "winrm_timeout": "",
+                "instance_type": "" ,
+                "access_key": "",
+                "secret_key": ""
+},
+        "builders": [{
+                "type": "amazon-ebs",
+                "region": "{{user `region`}}",
+                "access_key": "{{user `access_key`}}",
+                "secret_key": "{{user `secret_key`}}",
+                "source_ami_filter": {
+                        "filters": {
+                                "virtualization-type": "hvm",
+                                "name": "Windows_Server-2016-English-Full-Base-*",
+                                "root-device-type": "ebs"
+                        },
+                        "owners": ["801119661308"],
+                        "most_recent": true
+                },
+                "launch_block_device_mappings": [{
+                        "device_name": "/dev/sda1",
+                        "delete_on_termination": "true",
+                        "volume_size": 30,
+                        "volume_type": "gp2"
+                },
+                {
+                        "device_name": "/dev/sdb",
+                        "snapshot_id": "{{user `media_snapshot_id`}}",
+                        "delete_on_termination": "true",
+                        "volume_size": 6,
+                        "volume_type": "gp2"
+                }
+
+         ],
+                "instance_type": "{{user `instance_type`}}",
+                "ami_name": "AMI_NAME-{{timestamp}}",
+                "communicator": "winrm",
+                "winrm_timeout": "{{user `winrm_timeout`}}",
+                "winrm_username": "Administrator",
+                "user_data_file": "scripts/userdata.ps1"
+        }],
+        "provisioners": [
+        {
+                "type": "powershell",
+                "script": "scripts/msipackages.ps1"
+        },
+        {
+                "type": "file",
+                "source": "scripts/SetupComplete.cmd",
+                "destination": "C:\\Windows\\Setup\\Scripts\\SetupComplete.cmd"
+        },
+        {
+                "type": "file",
+                "source": "files/EXAMPLE.dll",
+                "destination": "C:\\Program Files\\Microsoft SQL Server Reporting Services\\SSRS\\ReportServer\\bin\\EXAMPLE.dll"
+        },
+        {
+                "type": "powershell",
+                "inline": ["C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\SysprepInstance.ps1"]
+        }
+        ]
+}
