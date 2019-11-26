@@ -1,0 +1,64 @@
+{
+    "variables": {
+            "region": "",
+            "instance_type": ""
+},
+    "builders": [{
+            "type": "amazon-ebs",
+            "ssh_username": "ec2-user",
+            "ssh_interface": "public_ip",
+            "ssh_clear_authorized_keys": "true",
+            "region": "{{user `region`}}",
+            "source_ami_filter": {
+                    "filters": {
+                            "virtualization-type": "hvm",
+                            "name": "amzn2-ami-hvm-*-x86_64-gp2",
+                            "root-device-type": "ebs"
+                    },
+                    "owners": ["amazon"],
+                    "most_recent": true
+            },
+        "temporary_iam_instance_profile_policy_document": {
+         "Version": "2012-10-17",
+         "Statement": [
+         {
+            "Effect": "Allow",
+            "Action": [
+               "ssm:GetParameter*"
+                           ],
+            "Resource": "*"
+         },
+         {
+            "Effect" : "Allow",
+            "Action" : [
+               "kms:Decrypt"
+               ],
+            "Resource": "*"
+         }]
+      },
+        "launch_block_device_mappings": [{
+                    "device_name": "/dev/xvda",
+                    "delete_on_termination": "true",
+                    "volume_size": 20,
+                    "volume_type": "gp2"
+            }
+      ],
+            "instance_type": "{{user `instance_type`}}",
+            "ami_name": "AMI_NAME-{{isotime | clean_ami_name}}",
+            "spot_price": "auto",
+            "encrypt_boot": true,
+            "kms_key_id": "KMS_KEY_ARN"
+    }],
+    "provisioners": [
+    {
+            "type": "shell",
+            "script": "scripts/pre-req.sh",
+            "valid_exit_codes": [0]
+    },
+    {
+            "type": "shell",
+            "script": "scripts/provision.sh",
+            "valid_exit_codes": [0]
+    }
+    ]
+}
