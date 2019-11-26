@@ -9,6 +9,7 @@ Creates an encrypted base AMI. Details:
  * Uses the latest Amazon Linux 2 AMI as its base.
  * Temp IAM profile grants access to SSM parameters.
  * Resultant AMI will be encrypted by default using the KMS key "KMS_KEY_ARN" 
+ * **Spot instances** are used to create the ec2 host.
 
 #### [packer_windows_complex_provisioner.json](https://github.com/Cloud-42/packer-templates/blob/master/packer_windows_complex_provisioner.json "packer_windows_complex_provisioner.json")
 Complex template for provisioning a Windows AMI via various methods:
