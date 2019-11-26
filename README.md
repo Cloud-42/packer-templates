@@ -12,7 +12,7 @@ Complex template for provisioning a Windows AMI via various methods:
  * Provisioned using file & Powershell provisioners.
  * Secondary volume is added to the AMI based upon the snapshot id given.
 
-##### Variables
+##### Variables reference
 | Variable | Meaning |
 | :------- | :----- |
 | `region`| Region in which to launch the build |
